@@ -1,0 +1,273 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 1 /Kids [3 0 R] >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+6 0 obj
+<< /Length 4700 >>
+stream
+0.970 0.980 1.000 rg
+0.0 0.0 595.0 842.0 re f
+0.110 0.270 0.630 rg
+0.0 790.0 595.0 52.0 re f
+1.000 1.000 1.000 rg
+BT
+/F2 18 Tf
+30.0 820.0 Td
+(Fluxo visual - Confirmacao de Nota \(SAP -> GDMC\)) Tj
+ET
+BT
+/F1 10 Tf
+30.0 804.0 Td
+(Endpoint: /v1/sync-transport-order/confirm-so-statement) Tj
+ET
+0.930 0.950 0.980 rg
+22.0 736.0 551.0 45.0 re f
+0.700 0.760 0.860 RG
+1.00 w
+22.0 736.0 551.0 45.0 re S
+BT
+/F2 10 Tf
+30.0 767.0 Td
+(Legenda de cores \(sistemas\):) Tj
+ET
+0.840 0.910 1.000 rg
+175.0 752.0 16.0 12.0 re f
+0.500 0.500 0.500 RG
+175.0 752.0 16.0 12.0 re S
+0.000 0.000 0.000 rg
+BT
+/F1 9 Tf
+197.0 754.0 Td
+(SAP Integration) Tj
+ET
+0.860 1.000 0.870 rg
+310.0 752.0 16.0 12.0 re f
+0.500 0.500 0.500 RG
+310.0 752.0 16.0 12.0 re S
+0.000 0.000 0.000 rg
+BT
+/F1 9 Tf
+332.0 754.0 Td
+(Retail) Tj
+ET
+1.000 0.950 0.820 rg
+445.0 752.0 16.0 12.0 re f
+0.500 0.500 0.500 RG
+445.0 752.0 16.0 12.0 re S
+0.000 0.000 0.000 rg
+BT
+/F1 9 Tf
+467.0 754.0 Td
+(Inventory) Tj
+ET
+0.980 0.880 0.880 rg
+580.0 752.0 16.0 12.0 re f
+0.500 0.500 0.500 RG
+580.0 752.0 16.0 12.0 re S
+0.000 0.000 0.000 rg
+BT
+/F1 9 Tf
+602.0 754.0 Td
+(Integracoes externas / risco de lentidao) Tj
+ET
+0.840 0.910 1.000 rg
+95.0 660.0 405.0 58.0 re f
+0.450 0.450 0.450 RG
+1.00 w
+95.0 660.0 405.0 58.0 re S
+0.050 0.050 0.100 rg
+BT
+/F2 10 Tf
+103.0 704.0 Td
+(1\) SAP envia a confirmacao de nota) Tj
+ET
+BT
+/F1 9 Tf
+103.0 689.0 Td
+(Entrada no endpoint confirm-so-statement.) Tj
+0 -11 Td
+(Aqui comeca o processamento de faturamento.) Tj
+ET
+0.200 0.200 0.200 rg
+297.0 660.0 m 297.0 654.0 l S
+293.0 654.0 m 301.0 654.0 l 297.0 648.0 l h f
+0.840 0.910 1.000 rg
+95.0 575.0 405.0 68.0 re f
+0.450 0.450 0.450 RG
+1.00 w
+95.0 575.0 405.0 68.0 re S
+0.050 0.050 0.100 rg
+BT
+/F2 10 Tf
+103.0 629.0 Td
+(2\) SAP Integration organiza o tipo de fluxo) Tj
+ET
+BT
+/F1 9 Tf
+103.0 614.0 Td
+(Separacao por target e guid:) Tj
+0 -11 Td
+(- BR20: pecas) Tj
+0 -11 Td
+(- BR10/BR40 com guid: veiculo update) Tj
+0 -11 Td
+(- BR10/BR40 sem guid: veiculo create) Tj
+ET
+0.200 0.200 0.200 rg
+297.0 575.0 m 297.0 566.0 l S
+293.0 566.0 m 301.0 566.0 l 297.0 560.0 l h f
+0.980 0.880 0.880 rg
+95.0 485.0 405.0 60.0 re f
+0.450 0.450 0.450 RG
+1.00 w
+95.0 485.0 405.0 60.0 re S
+0.050 0.050 0.100 rg
+BT
+/F2 10 Tf
+103.0 531.0 Td
+(3\) Busca de documentos da nota \(MasterSaf\)) Tj
+ET
+BT
+/F1 9 Tf
+103.0 516.0 Td
+(Baixa PDF/XML da NF e extrai dados chave \(VIN, CNPJ etc\).) Tj
+0 -11 Td
+(Essa etapa pode aumentar bastante o tempo total.) Tj
+ET
+0.200 0.200 0.200 rg
+297.0 485.0 m 297.0 478.0 l S
+293.0 478.0 m 301.0 478.0 l 297.0 472.0 l h f
+0.860 1.000 0.870 rg
+95.0 395.0 405.0 62.0 re f
+0.450 0.450 0.450 RG
+1.00 w
+95.0 395.0 405.0 62.0 re S
+0.050 0.050 0.100 rg
+BT
+/F2 10 Tf
+103.0 443.0 Td
+(4\) Chamada para Retail \(receive-sap-invoice\)) Tj
+ET
+BT
+/F1 9 Tf
+103.0 428.0 Td
+(Retail grava/atualiza dados da invoice do pedido.) Tj
+0 -11 Td
+(Depois recalcula status de pedido e entrega.) Tj
+ET
+0.200 0.200 0.200 rg
+297.0 395.0 m 297.0 388.0 l S
+293.0 388.0 m 301.0 388.0 l 297.0 382.0 l h f
+1.000 0.950 0.820 rg
+95.0 305.0 405.0 62.0 re f
+0.450 0.450 0.450 RG
+1.00 w
+95.0 305.0 405.0 62.0 re S
+0.050 0.050 0.100 rg
+BT
+/F2 10 Tf
+103.0 353.0 Td
+(5\) Retail aciona Inventory em alguns cenarios) Tj
+ET
+BT
+/F1 9 Tf
+103.0 338.0 Td
+(Inventory processa TR/NF e pode redefinir status do retail order.) Tj
+0 -11 Td
+(Quando esse trecho demora, todo o fluxo fica lento.) Tj
+ET
+0.200 0.200 0.200 rg
+297.0 305.0 m 297.0 298.0 l S
+293.0 298.0 m 301.0 298.0 l 297.0 292.0 l h f
+0.840 0.910 1.000 rg
+95.0 215.0 405.0 65.0 re f
+0.450 0.450 0.450 RG
+1.00 w
+95.0 215.0 405.0 65.0 re S
+0.050 0.050 0.100 rg
+BT
+/F2 10 Tf
+103.0 266.0 Td
+(6\) Retorno para SAP Integration) Tj
+ET
+BT
+/F1 9 Tf
+103.0 251.0 Td
+(Sem erro: resposta de sucesso para o SAP.) Tj
+0 -11 Td
+(Com erro: rollback da transacao e retorno de falha.) Tj
+ET
+0.980 0.880 0.880 rg
+22.0 120.0 265.0 78.0 re f
+0.450 0.450 0.450 RG
+1.00 w
+22.0 120.0 265.0 78.0 re S
+0.050 0.050 0.100 rg
+BT
+/F2 10 Tf
+30.0 184.0 Td
+(Sinal de alerta no seu log \(~120s\)) Tj
+ET
+BT
+/F1 9 Tf
+30.0 169.0 Td
+(Nao parece erro funcional direto.) Tj
+0 -11 Td
+(Parece gargalo de desempenho em chamada interna) Tj
+0 -11 Td
+(entre SAP Integration -> Retail -> Inventory.) Tj
+ET
+0.930 0.950 0.980 rg
+308.0 120.0 265.0 78.0 re f
+0.450 0.450 0.450 RG
+1.00 w
+308.0 120.0 265.0 78.0 re S
+0.050 0.050 0.100 rg
+BT
+/F2 10 Tf
+316.0 184.0 Td
+(Leitura para publico nao tecnico) Tj
+ET
+BT
+/F1 9 Tf
+316.0 169.0 Td
+("A nota chega do SAP, o sistema valida e) Tj
+0 -11 Td
+(propaga para Retail/Inventory. Se uma etapa) Tj
+0 -11 Td
+(demora, tudo termina tarde, mesmo com sucesso.") Tj
+ET
+0.250 0.250 0.250 rg
+BT
+/F1 8 Tf
+22.0 22.0 Td
+(Arquivo gerado automaticamente para analise funcional do endpoint confirm-so-statement) Tj
+ET
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000000321 00000 n 
+0000000396 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+5148
+%%EOF

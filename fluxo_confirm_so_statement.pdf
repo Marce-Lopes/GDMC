@@ -1,0 +1,108 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 1 /Kids [3 0 R] >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 1854 >>
+stream
+BT
+/F1 11 Tf
+40 800 Td
+(Fluxo: /v1/sync-transport-order/confirm-so-statement) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(1\) SAP chama endpoint em sap-integration \(SyncToController.sapStatementSync\)) Tj
+0 -14 Td
+(2\) SyncToService.sapStatementSync separa por target:) Tj
+0 -14 Td
+(   - BR20: fluxo de pecas) Tj
+0 -14 Td
+(   - BR10/BR40 com guid: fluxo veiculo update) Tj
+0 -14 Td
+(   - BR10/BR40 sem guid: fluxo veiculo create) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Fluxo BR20 \(pecas\)) Tj
+0 -14 Td
+(3\) saveBatchInvoiceByPart) Tj
+0 -14 Td
+(4\) Busca PDF/XML no MasterSaf) Tj
+0 -14 Td
+(5\) Atualiza SapSoMirror e status de sales order) Tj
+0 -14 Td
+(6\) Salva itens de invoice) Tj
+0 -14 Td
+(7\) Opcional: saleTransportOrderClient.receiveSapInvoice) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Fluxo veiculo update \(guid preenchido\)) Tj
+0 -14 Td
+(8\) processVehicleSapStatementUpdate) Tj
+0 -14 Td
+(9\) Busca PDF/XML no MasterSaf e parse do XML) Tj
+0 -14 Td
+(10\) Resolve channel/warehouse \(fromId/toId\)) Tj
+0 -14 Td
+(11\) Salva invoice item) Tj
+0 -14 Td
+(12\) Chama retailOrderClient.receiveSapInvoice) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Fluxo veiculo create \(guid vazio\)) Tj
+0 -14 Td
+(13\) processVehicleSapStatementCreate) Tj
+0 -14 Td
+(14\) Busca PDF/XML no MasterSaf e parse do XML) Tj
+0 -14 Td
+(15\) Monta ReceiveSapNfeDto) Tj
+0 -14 Td
+(16\) Chama inventoryTransportRequestClient.receiveSapNfeToProcessTransportRequest) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Retorno) Tj
+0 -14 Td
+(17\) Se alguma etapa critica falha: rollback e SapResponseBean com erro) Tj
+0 -14 Td
+(18\) Se tudo ok: SapResponseBean.successFactory) Tj
+0 -14 Td
+() Tj
+0 -14 Td
+(Referencias de codigo:) Tj
+0 -14 Td
+(- sap-integration/.../SyncToController.java) Tj
+0 -14 Td
+(- sap-integration/.../SyncToService.java) Tj
+0 -14 Td
+(- retail/.../RetailOrderController.java) Tj
+0 -14 Td
+(- inventory/.../TransportRequestController.java) Tj
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000311 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2217
+%%EOF
