@@ -1,4 +1,4 @@
-"#!/bin/bash
+#!/bin/bash
 # =============================================================================
 # GDMC-EU — Copiar repo para Linux remoto via rsync
 # =============================================================================
@@ -43,4 +43,4 @@ echo "  cd ${TARGET#*:}"
 echo "  ./deploy-remote.sh build     # builda tudo"
 echo "  ./deploy-remote.sh all       # sobe tudo"
 echo "  ./deploy-remote.sh status    # verifica"
-echo ""
+echo 

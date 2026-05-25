@@ -1,4 +1,4 @@
-"# =============================================================================
+# =============================================================================
 # GDMC-EU — Docker Compose para Linux (com resource limits)
 # =============================================================================
 # Cada serviço Java limitado a 512MB RAM / 0.5 CPU
@@ -495,4 +495,4 @@ services:
 volumes:
   gdmc-mysql-data:
   gdmc-zookeeper-data:
-  gdmc-kafka-data:"
+  gdmc-kafka-data:

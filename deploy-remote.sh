@@ -1,16 +1,15 @@
-"#!/bin/bash
+#!/bin/bash
 # =============================================================================
-# GDMC-EU — Deploy remoto em Linux
+# GDMC-EU - Deploy remoto em Linux
 # =============================================================================
 # Uso:
-#   1. Copiar este repo inteiro para o Linux (rsync/scp)
-#   2. ./deploy-remote.sh build    # faz build de tudo
-#   3. ./deploy-remote.sh infra    # sobe MySQL, Redis, Kafka
-#   4. ./deploy-remote.sh core     # sobe serviços core
-#   5. ./deploy-remote.sh business # sobe serviços de negócio
-#   6. ./deploy-remote.sh all      # sobe tudo
-#   7. ./deploy-remote.sh status   # health check
-#   8. ./deploy-remote.sh down     # desce tudo
+#   ./deploy-remote.sh build    # faz build de tudo
+#   ./deploy-remote.sh infra    # sobe MySQL, Redis, Kafka
+#   ./deploy-remote.sh core     # sobe servicos core
+#   ./deploy-remote.sh business # sobe servicos de negocio
+#   ./deploy-remote.sh all      # sobe tudo
+#   ./deploy-remote.sh status   # health check
+#   ./deploy-remote.sh down     # desce tudo
 # =============================================================================
 
 set -e
@@ -28,7 +27,7 @@ log_info()  { echo -e "${GREEN}[INFO]${NC}  $1"; }
 log_warn()  { echo -e "${YELLOW}[WARN]${NC}  $1"; }
 log_err()   { echo -e "${RED}[ERR]${NC}   $1"; }
 
-# ── BUILD ──────────────────────────────────────────────────────────────────
+# -- BUILD -------------------------------------------------------------------
 do_build() {
     log_info "Publicando common-lib no mavenLocal..."
     cd common-lib
@@ -42,14 +41,14 @@ do_build() {
                sap-integration wms-integration mdm-integration gbom-integration \
                idms-integration call-center-integration imp-exp workflow notification; do
         if [ -d "$svc" ]; then
-            echo "  → $svc-client"
+            echo "  -> $svc-client"
             cd "$svc"
             ./gradlew clean publishToMavenLocal -x test -x integrationTest 2>/dev/null || true
             cd ..
         fi
     done
 
-    log_info "Building serviços..."
+    log_info "Building servicos..."
     build_svc() {
         local dir=$1 jar_sub=$2 jar_name=$3 img=$4
         log_info "Building $dir..."
@@ -60,15 +59,19 @@ do_build() {
         else
             local jar_path="${jar_sub}/build/libs/${jar_name}"
             if [ -f "$jar_path" ]; then
-                docker build -t "gdmc/${img}:local" - <<<"FROM openjdk:11-jdk-slim-buster
-COPY ${jar_path} /app/service.jar
-ENTRYPOINT [\"java\", \"-jar\", \"-Xms256m\", \"-Xmx256m\", \"/app/service.jar\"]"
+                cat > Dockerfile.gen << 'ENDLF'
+FROM openjdk:11-jdk-slim-buster
+ENDLF
+                echo "COPY ${jar_path} /app/service.jar" >> Dockerfile.gen
+                echo 'ENTRYPOINT ["java", "-jar", "-Xms256m", "-Xmx256m", "/app/service.jar"]' >> Dockerfile.gen
+                docker build -f Dockerfile.gen -t "gdmc/${img}:local" . 2>/dev/null || log_warn "$dir: docker falhou"
+                rm -f Dockerfile.gen
             fi
         fi
         cd ..
     }
 
-    # Ordem de dependência
+    # Ordem de dependencia
     build_svc "app-server" "app-server-service" "app-server-service-1.0.0.jar" "app-server"
     build_svc "org-user" "org-user-service" "org-user-service-1.0.0.jar" "org-user"
     build_svc "master-data" "master-data-service" "master-data-service-1.0.0.jar" "master-data"
@@ -101,8 +104,12 @@ ENTRYPOINT [\"java\", \"-jar\", \"-Xms256m\", \"-Xmx256m\", \"/app/service.jar\"
     # Workflow Engine (Maven)
     log_info "Building workflow-engine (Maven)..."
     cd workflow-engine
-    ./mvnw clean package -DskipTests 2>/dev/null || log_warn "workflow-engine: falhou"
-    [ -f "Dockerfile-local" ] && docker build -f Dockerfile-local -t "gdmc/workflow-engine:local" . 2>/dev/null
+    if [ -f "mvnw" ]; then
+        ./mvnw clean package -DskipTests 2>/dev/null || log_warn "workflow-engine: falhou"
+        if [ -f "Dockerfile-local" ]; then
+            docker build -f Dockerfile-local -t "gdmc/workflow-engine:local" . 2>/dev/null || log_warn "workflow-engine: docker falhou"
+        fi
+    fi
     cd ..
 
     # Frontend
@@ -111,29 +118,33 @@ ENTRYPOINT [\"java\", \"-jar\", \"-Xms256m\", \"-Xmx256m\", \"/app/service.jar\"
     if [ -f "package.json" ]; then
         npm install 2>/dev/null
         npm run build:beta 2>/dev/null || npm run build 2>/dev/null || log_warn "web: build falhou"
-        docker build -t "gdmc/web-frontend:local" - <<<"FROM nginx:alpine
-COPY dist/ /usr/share/nginx/html/"
+        cat > Dockerfile.nginx << 'ENDLF'
+FROM nginx:alpine
+COPY dist/ /usr/share/nginx/html/
+ENDLF
+        docker build -f Dockerfile.nginx -t "gdmc/web-frontend:local" . 2>/dev/null || log_warn "web: docker falhou"
+        rm -f Dockerfile.nginx
     fi
     cd ..
 
     log_info "Build completo!"
 }
 
-# ── WAIT ───────────────────────────────────────────────────────────────────
+# -- WAIT --------------------------------------------------------------------
 wait_healthy() {
     local svc=$1 timeout=${2:-60}
     log_info "Aguardando $svc ficar healthy..."
     for i in $(seq 1 $timeout); do
         if $COMPOSE ps $svc 2>/dev/null | grep -q "healthy"; then
-            log_info "$svc ✓"
+            log_info "$svc ok"
             return
         fi
         sleep 2
     done
-    log_warn "$svc: timeout após ${timeout}s"
+    log_warn "$svc: timeout apos ${timeout}s"
 }
 
-# ── INFRA ──────────────────────────────────────────────────────────────────
+# -- INFRA -------------------------------------------------------------------
 do_infra() {
     log_info "Subindo infraestrutura..."
     $COMPOSE up -d mysql redis zookeeper kafka
@@ -144,7 +155,7 @@ do_infra() {
     log_info "Infra pronta!"
 }
 
-# ── CORE ───────────────────────────────────────────────────────────────────
+# -- CORE --------------------------------------------------------------------
 do_core() {
     log_info "Subindo Core Services..."
     $COMPOSE up -d master-data org-user channel-data-center leads
@@ -152,7 +163,7 @@ do_core() {
     log_info "Core pronto!"
 }
 
-# ── BUSINESS ───────────────────────────────────────────────────────────────
+# -- BUSINESS ----------------------------------------------------------------
 do_business() {
     log_info "Subindo Business Services..."
     $COMPOSE up -d sales-order purchase-order inventory transport-order \
@@ -161,16 +172,16 @@ do_business() {
     log_info "Business pronto!"
 }
 
-# ── INTEGRATIONS ───────────────────────────────────────────────────────────
+# -- INTEGRATIONS ------------------------------------------------------------
 do_integrations() {
-    log_info "Subindo Integrações (stub)..."
+    log_info "Subindo Integracoes (stub)..."
     $COMPOSE up -d sap-integration wms-integration mdm-integration \
         gbom-integration idms-integration call-center-integration imp-exp
     sleep 10
-    log_info "Integrações prontas!"
+    log_info "Integracoes prontas!"
 }
 
-# ── FRONT ──────────────────────────────────────────────────────────────────
+# -- FRONT -------------------------------------------------------------------
 do_front() {
     log_info "Subindo Workflow + BFFs + Gateway + Frontend..."
     $COMPOSE up -d workflow workflow-engine web-bff mobile-bff api-gateway web-frontend
@@ -178,7 +189,7 @@ do_front() {
     log_info "Front pronto!"
 }
 
-# ── ALL ────────────────────────────────────────────────────────────────────
+# -- ALL ---------------------------------------------------------------------
 do_all() {
     do_infra
     do_core
@@ -197,7 +208,7 @@ do_all() {
     echo ""
 }
 
-# ── STATUS ─────────────────────────────────────────────────────────────────
+# -- STATUS ------------------------------------------------------------------
 do_status() {
     echo ""
     echo -e "${CYAN}GDMC-EU Status${NC}"
@@ -223,16 +234,16 @@ do_status() {
     done
 }
 
-# ── DOWN ───────────────────────────────────────────────────────────────────
+# -- DOWN --------------------------------------------------------------------
 do_down() {
     log_info "Parando tudo..."
     $COMPOSE down
     log_info "Parado!"
 }
 
-# ── DOWN + VOLUMES ─────────────────────────────────────────────────────────
+# -- NUKE --------------------------------------------------------------------
 do_nuke() {
-    log_warn "REMOVENDO tudo inclusive volumes (dados do MySQL serão perdidos)!"
+    log_warn "REMOVENDO tudo inclusive volumes (dados do MySQL serao perdidos)!"
     read -p "Tem certeza? [y/N] " confirm
     if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
         $COMPOSE down -v
@@ -242,7 +253,7 @@ do_nuke() {
     fi
 }
 
-# ── MAIN ───────────────────────────────────────────────────────────────────
+# -- MAIN --------------------------------------------------------------------
 case "${1:-}" in
     build)         do_build ;;
     infra)         do_infra ;;
@@ -264,7 +275,7 @@ case "${1:-}" in
         echo "  integrations  - Sobe sap, wms, mdm, gbom, idms, call-center, imp-exp (stub)"
         echo "  front         - Sobe workflow, BFFs, gateway, frontend"
         echo "  all           - Sobe tudo em ordem"
-        echo "  status        - Health check de todos os serviços"
+        echo "  status        - Health check de todos os servicos"
         echo "  down          - Para todos os containers"
         echo "  nuke          - Remove tudo + volumes (apaga dados!)"
         ;;
